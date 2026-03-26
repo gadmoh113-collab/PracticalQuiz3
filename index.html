@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar System — A-Frame</title>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       A-Frame library loaded locally (no external CDN)
+  ════════════════════════════════════════════════════════════ -->
+  <script src="script/aframe.min.js"></script>
+
+  <!-- All custom components and planet configuration -->
+  <script src="script/a-frame.js"></script>
+
+  <style>
+    html, body { margin: 0; padding: 0; overflow: hidden; background: #000; }
+    #ui-hint {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.55);
+      font: 13px/1.5 system-ui, sans-serif;
+      text-align: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ─────────────────────────────────────────────────────────────
+     A-SCENE
+     • wasd-controls + look-controls for free navigation
+     • solar-system-builder dynamically creates all planets
+──────────────────────────────────────────────────────────────── -->
+<a-scene
+  solar-system-builder
+  background="color: #000000"
+  renderer="antialias: true; logarithmicDepthBuffer: true"
+  vr-mode-ui="enabled: true"
+>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ASSET PRELOADING
+       To swap a texture: change the src path here — nothing else
+       in the scene needs to change.
+  ════════════════════════════════════════════════════════════ -->
+  <a-assets timeout="10000">
+
+    <!-- Skybox / background -->
+    <img id="skyTexture"         src="./texture/2k_stars_milky_way.jpg" crossorigin="anonymous" />
+
+    <!-- Sun -->
+    <img id="sunTexture"         src="./texture/2k_sun.jpg"              crossorigin="anonymous" />
+
+    <!-- Planets (in orbital order) -->
+    <img id="mercuryTexture"     src="./texture/2k_mercury.jpg"          crossorigin="anonymous" />
+    <img id="venusTexture"       src="./texture/2k_venus_surface.jpg"    crossorigin="anonymous" />
+    <img id="earthTexture"       src="./texture/2k_earth_daymap.jpg"     crossorigin="anonymous" />
+    <img id="moonTexture"        src="./texture/2k_moon.jpg"             crossorigin="anonymous" />
+    <img id="marsTexture"        src="./texture/2k_mars.jpg"             crossorigin="anonymous" />
+    <img id="jupiterTexture"     src="./texture/2k_jupiter.jpg"          crossorigin="anonymous" />
+    <img id="saturnTexture"      src="./texture/2k_saturn.jpg"           crossorigin="anonymous" />
+    <img id="saturnRingTexture"  src="./texture/2k_saturn_ring_alpha.png" crossorigin="anonymous" />
+    <img id="uranusTexture"      src="./texture/2k_uranus.jpg"           crossorigin="anonymous" />
+    <img id="neptuneTexture"     src="./texture/2k_neptune.jpg"          crossorigin="anonymous" />
+
+  </a-assets>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SKYBOX  — full 360° star-field
+  ════════════════════════════════════════════════════════════ -->
+  <a-sky src="#skyTexture" rotation="0 0 0"></a-sky>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CAMERA  — start position gives a good overview of the system
+  ════════════════════════════════════════════════════════════ -->
+  <a-entity
+    id="cameraRig"
+    position="0 18 52"
+    rotation="-18 0 0"
+  >
+    <a-camera
+      look-controls="pointerLockEnabled: false"
+      wasd-controls="acceleration: 25"
+      far="2000"
+      near="0.05"
+    >
+      <!-- Crosshair cursor for desktop -->
+      <a-cursor
+        color="#ffffff"
+        opacity="0.6"
+        fuse="false"
+      ></a-cursor>
+    </a-camera>
+  </a-entity>
+
+</a-scene>
+
+<!-- Navigation hint -->
+<div id="ui-hint">
+  🖱 Drag to look &nbsp;|&nbsp; W A S D to move &nbsp;|&nbsp; Scroll to zoom &nbsp;|&nbsp; VR headset supported
+</div>
+
+</body>
+</html>
